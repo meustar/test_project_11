@@ -20,13 +20,100 @@ public class HomeController {
     @GetMapping("b")
     @ResponseBody
     public String plus(
-            @RequestParam("a") String num1Str,
-            String b
+            // http://localhost:8080/b?a=20&b=40
+            @RequestParam("a") int num1,
+            @RequestParam("b") int num2,
+            @RequestParam(name = "c", defaultValue = "10") int num3
+
     ) {
-        int num1 = Integer.parseInt(num1Str);
-        int num2 = Integer.parseInt(b);
+
         System.out.println("a : " + num1);
         System.out.println("b : " + num2);
-        return "a + b = %d".formatted(num1 + num2);
+
+        return "a + b + c = %d".formatted(num1 + num2 + num3);
+    }
+
+    @GetMapping("c")
+    @ResponseBody
+    public String c(
+          Boolean married
+    ) {
+        if (married == null) return "정보 입력하세요";
+        return married ? "기혼" : "미혼";
+    }
+
+    public static class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
+    }
+
+    @GetMapping("person1")
+    @ResponseBody
+    public String person1(
+            String name,
+            int age
+
+    ) {
+
+        Person person = new Person(name, age);
+
+        return person.toString();
+    }
+
+    @GetMapping("person2")
+    @ResponseBody
+    public Person person2(
+            Person person
+
+    ) {
+        return person;
+    }
+
+    @GetMapping("e")
+    @ResponseBody
+    public int e () {
+        int age = 10;
+        return age;
+    }
+
+    @GetMapping("f")
+    @ResponseBody
+    public boolean f () {
+        boolean b = true;
+        return b;
+
+        /* 리턴 하는값의 type이 int, boolean 등 String이 아니면.
+        웹 브라우저로 통신하는 중에 자바스크립트와 자바의 동일 타입인 String으로 한번더 변환 과정을 겪어
+        사실상 웹에 보이는 값은 String 이다.
+        * */
     }
 }
